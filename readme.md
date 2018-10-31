@@ -1,6 +1,6 @@
 # JavaScript30 - 30 Days of JavaScript
 
-> https://javascript30.com <
+\> https://javascript30.com <
 
 This is my repo for following the JavaScript30 course by Wes Bos.
 
