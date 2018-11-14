@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+// Array que manterá as cidades
+const cities = [];
+
+// Requisição que puxa os dados e insere no array
+fetch(endpoint)
+	.then(res => res.json())
+	.then(data => cities.push(...data))
+
+
+function filterArray(input, dataset){
+	// Criação de um objeto RegExp para achar a cidade/estado
+	const regx = new RegExp(input, 'gi');
+
+	// Filtragem do array 
+	return dataset.filter(data => {
+		// Esta cidade entrará no array filtrado caso sua cidade ou estado contenha algo do texto digitado
+		return data.city.match(regx) || data.state.match(regx)
+	});
+}
+
+function numberWithCommas(x){
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function displayArray(){
+	// Recebendo o array filtrado
+	let filteredArray = filterArray(this.value, cities);
+
+	// Regex para criar o efeito de highlight na parte que faz match
+	const regx = new RegExp(this.value, 'gi');
+
+	// Objeto contendo todas as entradas que correspondem
+	const html = filteredArray.map(place => {
+
+		// Insere um span com a classe de highlight em cada parte da string que contiver o valor encontrado pelo regex
+		const cityName = place.city.replace(regx, `<span class="hl">${this.value}</span>`);
+		const stateName = place.state.replace(regx, `<span class="hl">${this.value}</span>`);
+
+		return `
+			<li>
+				<span class="name">${cityName}, ${stateName}<\span>
+				<span class="population">${numberWithCommas(place.population)}<\span>
+			</li>
+		`;
+	// Esta função juntará o array em uma string só
+	}).join('');
+
+	// inserção dos elementos
+	suggestions.innerHTML = html;
+}
+
+// Input contendo a pesquisa
+const textInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+// Eventos para mostrar o resultado da procura
+textInput.addEventListener('change', displayArray);
+textInput.addEventListener('keyup', displayArray);
+
+
+
+</script>
+  </body>
+</html>
