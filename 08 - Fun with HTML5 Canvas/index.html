@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+
+<script>
+
+const canvas = document.querySelector('#draw');
+const ctx = canvas.getContext('2d');
+
+// Ajustando o tamanho do canvas para toda a tela
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+// Cor usada no pincel
+ctx.strokeStyle = '#BADA55';
+// Formato da ligação entre linhas
+ctx.lineJoin = 'round';
+// Formato do final da linha
+ctx.lineCap = 'round';
+ctx.lineWidth = 10;
+
+// variáveis de estado
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let hue = 0;
+let direction = true;
+
+function draw(e){
+	if(!isDrawing) return;
+
+	// Cor do pincel
+	ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+	// Começo do desenho da linha
+	ctx.beginPath();
+	// Começo
+	ctx.moveTo(lastX, lastY);
+	// Fim 
+	ctx.lineTo(e.offsetX, e.offsetY);
+	// Render
+	ctx.stroke();
+
+	// Atualiza as coordenadas do mouse
+	[lastX, lastY] = [e.offsetX, e.offsetY];
+
+	// Atualizando o valor HSL
+	hue++;
+	if(hue >= 360) hue = 0;
+
+	// Atualizando o tamanho da linha
+	if(ctx.lineWidth > 99 || ctx.lineWidth < 2) direction = !direction;
+
+	direction   
+	? ctx.lineWidth++
+	: ctx.lineWidth--;
+}
+
+// Mouse Events
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mousedown', (e) => {
+
+	isDrawing = true;
+	// Atualiza as coordenadas do mouse
+	[lastX, lastY] = [e.offsetX, e.offsetY];
+});
+canvas.addEventListener('mouseup', 	 () => isDrawing = false);
+canvas.addEventListener('mouseout',	 () => isDrawing = false);
+
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
