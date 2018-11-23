@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    // Demonstração do uso de breakpoints
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('Ola mundo');
+
+    // Interpolated
+    console.log('Ola %s', 'mundo');
+
+    // Styled
+    console.log('%c Styled text test', 'font-size:20px; background:red;');
+
+    // warning!
+    console.warn('Cuidado');
+
+    // Error :|
+    console.error('Erro!');
+
+    // Info
+    console.info('Info.');
+
+    // Testing
+    console.assert(1 !== 1, 'Valores diferentes');
+
+    // clearing
+    //console.clear();
+
+    // Viewing DOM Elements
+    // const p = document.querySelector('p');
+    // console.log(p);
+    // console.dir(p);
+
+    // Grouping together
+    dogs.forEach(dog => {
+    	console.groupCollapsed(`${dog.name}`);
+    	console.log(`Este é ${dog.name}`);
+    	console.log(`${dog.name} tem ${dog.age} anos`);
+    	console.log(`${dog.name} teria ${dog.age * 7} se fosse humano`);
+    	console.groupEnd(`${dog.name}`);
+    });
+
+    // counting
+    console.count('js');
+    console.count('java');
+    console.count('java');
+    console.count('js');
+    console.count('java');
+    console.count('java');
+    console.count('js');
+    console.count('java');
+    console.count('java');
+    console.count('java');
+    console.count('js');
+    console.count('js');
+    console.count('js');
+
+    // timing
+    console.time('buscando dados');
+    fetch('https://api.github.com/users/nantius')
+    	.then(data => data.json())
+    	.then(data => {
+    		console.timeEnd('buscando dados');
+    		console.log(data);
+    	})
+
+  </script>
+</body>
+</html>
